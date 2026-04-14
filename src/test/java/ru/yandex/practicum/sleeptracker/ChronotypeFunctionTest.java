@@ -1,7 +1,6 @@
 package ru.yandex.practicum.sleeptracker;
 
 import org.junit.jupiter.api.Test;
-import ru.yandex.practicum.sleeptracker.analysis.BadSessionsCountFunction;
 import ru.yandex.practicum.sleeptracker.analysis.ChronotypeFunction;
 
 import java.time.LocalDateTime;
