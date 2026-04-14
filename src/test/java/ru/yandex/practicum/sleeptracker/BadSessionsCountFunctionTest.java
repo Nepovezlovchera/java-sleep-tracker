@@ -24,12 +24,12 @@ public class BadSessionsCountFunctionTest {
 
     @Test
     void should_ReturnCountBADSessionForList_WithTwoSessions() {
-        LocalDateTime start1 = LocalDateTime.of(2025, 10, 1, 23 , 0);
-        LocalDateTime end1 = LocalDateTime.of(2025, 10, 2, 7 , 0);
+        LocalDateTime start1 = LocalDateTime.of(2025, 10, 1, 23, 0);
+        LocalDateTime end1 = LocalDateTime.of(2025, 10, 2, 7, 0);
         SleepingSession session1 = new SleepingSession(start1, end1, SleepQuality.BAD);
 
-        LocalDateTime start2 = LocalDateTime.of(2025, 10, 1, 22 , 0);
-        LocalDateTime end2 = LocalDateTime.of(2025, 10, 2, 7 , 0);
+        LocalDateTime start2 = LocalDateTime.of(2025, 10, 1, 22, 0);
+        LocalDateTime end2 = LocalDateTime.of(2025, 10, 2, 7, 0);
         SleepingSession session2 = new SleepingSession(start2, end2, SleepQuality.GOOD);
 
 

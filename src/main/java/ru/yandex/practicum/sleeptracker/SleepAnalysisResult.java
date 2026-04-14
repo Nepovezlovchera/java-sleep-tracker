@@ -36,4 +36,8 @@ public class SleepAnalysisResult {
             return description + ": " + value;
         }
     }
+
+    public ChronotypeName getChronotypeName() {
+        return chronotypeName;
+    }
 }

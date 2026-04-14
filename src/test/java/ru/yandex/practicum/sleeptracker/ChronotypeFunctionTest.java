@@ -2,6 +2,7 @@ package ru.yandex.practicum.sleeptracker;
 
 import org.junit.jupiter.api.Test;
 import ru.yandex.practicum.sleeptracker.analysis.BadSessionsCountFunction;
+import ru.yandex.practicum.sleeptracker.analysis.ChronotypeFunction;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -14,31 +15,56 @@ public class ChronotypeFunctionTest {
     private static final char ZERO = 0;
     private static final char ONE = 1;
 
-    @Test
-    void should_ReturnZeroForEmptyList() {
-        BadSessionsCountFunction badSessionsCountFunction = new BadSessionsCountFunction();
-        List<SleepingSession> sleepingSessions = new ArrayList<>();
-        SleepAnalysisResult test = badSessionsCountFunction.apply(sleepingSessions);
 
-        assertEquals(ZERO, test.getValue());
+    @Test
+    void should_ReturnPigeonForEmptyList() {
+        ChronotypeFunction chronotypeFunction = new ChronotypeFunction();
+        List<SleepingSession> sleepingSessions = new ArrayList<>();
+        SleepAnalysisResult test =  chronotypeFunction.apply(sleepingSessions);
+        ChronotypeName chronotypeName = test.getChronotypeName();
+
+        assertEquals(Chronotype.PIGEON, chronotypeName.getName());
     }
 
     @Test
-    void should_ReturnCountBADSessionForList_WithTwoSessions() {
-        LocalDateTime start1 = LocalDateTime.of(2025, 10, 1, 23 , 0);
-        LocalDateTime end1 = LocalDateTime.of(2025, 10, 2, 7 , 0);
-        SleepingSession session1 = new SleepingSession(start1, end1, SleepQuality.BAD);
+    void should_DetectOwl() {
+        LocalDateTime start = LocalDateTime.of(2025, 10, 1, 23, 30);
+        LocalDateTime end = LocalDateTime.of(2025, 10, 2, 10, 0);
+        SleepingSession session = new SleepingSession(start, end, SleepQuality.GOOD);
 
-        LocalDateTime start2 = LocalDateTime.of(2025, 10, 1, 22 , 0);
-        LocalDateTime end2 = LocalDateTime.of(2025, 10, 2, 7 , 0);
-        SleepingSession session2 = new SleepingSession(start2, end2, SleepQuality.GOOD);
+        ChronotypeFunction chronotypeFunction = new ChronotypeFunction();
+        List<SleepingSession> sessions = List.of(session);
+        SleepAnalysisResult result = chronotypeFunction.apply(sessions);
 
+        ChronotypeName chronotypeName = result.getChronotypeName();
+        assertEquals(Chronotype.OWL, chronotypeName.getName());
+    }
 
-        BadSessionsCountFunction badSessionsCountFunction = new BadSessionsCountFunction();
-        List<SleepingSession> sleepingSessions = List.of(session1, session2);
-        SleepAnalysisResult test = badSessionsCountFunction.apply(sleepingSessions);
+    @Test
+    void should_DetectLark() {
+        LocalDateTime start = LocalDateTime.of(2025, 10, 1, 21, 0);
+        LocalDateTime end = LocalDateTime.of(2025, 10, 2, 6, 30);
+        SleepingSession session = new SleepingSession(start, end, SleepQuality.GOOD);
 
+        ChronotypeFunction chronotypeFunction = new ChronotypeFunction();
+        List<SleepingSession> sessions = List.of(session);
+        SleepAnalysisResult result = chronotypeFunction.apply(sessions);
 
-        assertEquals(ONE, test.getValue());
+        ChronotypeName chronotypeName = result.getChronotypeName();
+        assertEquals(Chronotype.LARK, chronotypeName.getName());
+    }
+
+    @Test
+    void should_DetectPigeon() {
+        LocalDateTime start = LocalDateTime.of(2025, 10, 1, 22, 30);
+        LocalDateTime end = LocalDateTime.of(2025, 10, 2, 8, 0);
+        SleepingSession session = new SleepingSession(start, end, SleepQuality.GOOD);
+
+        ChronotypeFunction chronotypeFunction = new ChronotypeFunction();
+        List<SleepingSession> sessions = List.of(session);
+        SleepAnalysisResult result = chronotypeFunction.apply(sessions);
+
+        ChronotypeName chronotypeName = result.getChronotypeName();
+        assertEquals(Chronotype.PIGEON, chronotypeName.getName());
     }
 }

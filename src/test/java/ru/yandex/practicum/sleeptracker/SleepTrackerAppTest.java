@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import ru.yandex.practicum.sleeptracker.analysis.TotalSessionsFunction;
 import ru.yandex.practicum.sleeptracker.SleepAnalysisResult;
 import ru.yandex.practicum.sleeptracker.SleepQuality;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,9 +28,9 @@ public class SleepTrackerAppTest {
 
     @Test
     void should_ReturnOneForList_WithOneSession() {
-        LocalDateTime start = LocalDateTime.of(2025, 10, 1, 23 , 15);
-         LocalDateTime end = LocalDateTime.of(2025, 10, 2, 7 , 30);
-         SleepingSession session = new SleepingSession(start, end, SleepQuality.GOOD);
+        LocalDateTime start = LocalDateTime.of(2025, 10, 1, 23, 15);
+        LocalDateTime end = LocalDateTime.of(2025, 10, 2, 7, 30);
+        SleepingSession session = new SleepingSession(start, end, SleepQuality.GOOD);
 
         TotalSessionsFunction totalSessionsFunction = new TotalSessionsFunction();
         List<SleepingSession> sleepingSessions = List.of(session);
