@@ -19,7 +19,7 @@ public class ChronotypeFunctionTest {
     void should_ReturnPigeonForEmptyList() {
         ChronotypeFunction chronotypeFunction = new ChronotypeFunction();
         List<SleepingSession> sleepingSessions = new ArrayList<>();
-        SleepAnalysisResult test =  chronotypeFunction.apply(sleepingSessions);
+        SleepAnalysisResult test = chronotypeFunction.apply(sleepingSessions);
         ChronotypeName chronotypeName = test.getChronotypeName();
 
         assertEquals(Chronotype.PIGEON, chronotypeName.getName());

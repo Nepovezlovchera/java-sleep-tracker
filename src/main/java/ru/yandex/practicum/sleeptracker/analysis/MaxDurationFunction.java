@@ -6,7 +6,7 @@ import ru.yandex.practicum.sleeptracker.SleepingSession;
 import java.util.List;
 import java.util.function.Function;
 
-public class MaxDurationFunction implements Function <List<SleepingSession>, SleepAnalysisResult> {
+public class MaxDurationFunction implements Function<List<SleepingSession>, SleepAnalysisResult> {
     @Override
     public SleepAnalysisResult apply(List<SleepingSession> sessions) {
         if (sessions.isEmpty()) {

@@ -8,11 +8,11 @@ import java.util.List;
 import java.util.function.Function;
 
 
-
 public class SleepTrackerApp {
 
     private static List<Function<List<SleepingSession>, SleepAnalysisResult>> analysisFunctions =
             new ArrayList<>();
+
     static {
         analysisFunctions.add(new TotalSessionsFunction());
         analysisFunctions.add(new MinDurationFunction());
@@ -24,7 +24,7 @@ public class SleepTrackerApp {
     }
 
     public static void main(String[] args) {
-        if(args.length == 0) {
+        if (args.length == 0) {
             System.err.println("Укажите путь к файлу!");
             return;
         }
@@ -32,11 +32,11 @@ public class SleepTrackerApp {
         WorkWithFile workWithFile = new WorkWithFile(filePath);
         try {
 
-           List<SleepingSession> sleepingSessions =  workWithFile.loadSessions();
-           for (Function<List<SleepingSession>, SleepAnalysisResult> function : analysisFunctions ){
-               SleepAnalysisResult result = function.apply(sleepingSessions);
-               System.out.println(result);
-           }
+            List<SleepingSession> sleepingSessions = workWithFile.loadSessions();
+            for (Function<List<SleepingSession>, SleepAnalysisResult> function : analysisFunctions) {
+                SleepAnalysisResult result = function.apply(sleepingSessions);
+                System.out.println(result);
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

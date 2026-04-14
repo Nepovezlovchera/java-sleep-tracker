@@ -12,7 +12,7 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-public class SleeplessNightsFunction  implements Function<List<SleepingSession>, SleepAnalysisResult> {
+public class SleeplessNightsFunction implements Function<List<SleepingSession>, SleepAnalysisResult> {
     private static final int HALF_DAY = 12;
     private static final char ONE_DAY = 1;
 
@@ -51,6 +51,7 @@ public class SleeplessNightsFunction  implements Function<List<SleepingSession>,
         return new SleepAnalysisResult("Количество бессонных ночей", countNotNightSession);
 
     }
+
     private boolean isSleeplessNight(SleepingSession sessions, LocalDate date) {
         LocalDateTime nightStart = LocalDateTime.of(date, LocalTime.of(0, 0));
         LocalDateTime nightEnd = LocalDateTime.of(date, LocalTime.of(6, 0));

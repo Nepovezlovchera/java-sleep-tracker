@@ -50,7 +50,7 @@ public class ChronotypeFunction implements Function<List<SleepingSession>, Sleep
 
         Map<Chronotype, Long> countChronotype = nightTypes.values().stream()
                 .collect(Collectors.groupingBy(
-                        chronotype -> chronotype,Collectors.counting()));
+                        chronotype -> chronotype, Collectors.counting()));
 
         return new SleepAnalysisResult("Твой хронатип", new ChronotypeName(
                 getDominantChronotype(countChronotype)));
@@ -69,9 +69,11 @@ public class ChronotypeFunction implements Function<List<SleepingSession>, Sleep
 
         if (starSleep.isAfter(OWL_SLEEP_START) && endSleep.isAfter(OWL_SLEEP_END)) {
             return Chronotype.OWL;
-        } if (starSleep.isBefore(LARK_SLEEP_START) && endSleep.isBefore(LARK_SLEEP_END)) {
+        }
+        if (starSleep.isBefore(LARK_SLEEP_START) && endSleep.isBefore(LARK_SLEEP_END)) {
             return Chronotype.LARK;
-        } return Chronotype.PIGEON;
+        }
+        return Chronotype.PIGEON;
     }
 
     private Chronotype getDominantChronotype(Map<Chronotype, Long> counts) {

@@ -10,9 +10,9 @@ public class TotalSessionsFunction implements Function<List<SleepingSession>, Sl
 
     @Override
     public SleepAnalysisResult apply(List<SleepingSession> sessions) {
-        long sessionCount  = sessions.size();
+        long sessionCount = sessions.size();
         SleepAnalysisResult sleepAnalysisResult = new SleepAnalysisResult("Кол-во сессий сна"
-                ,sessionCount);
+                , sessionCount);
         return sleepAnalysisResult;
     }
 }

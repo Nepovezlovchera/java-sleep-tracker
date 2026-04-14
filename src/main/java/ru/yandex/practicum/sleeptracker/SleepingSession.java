@@ -21,8 +21,7 @@ public class SleepingSession {
         return quality;
     }
 
-    public SleepingSession(LocalDateTime startDateANDTime, LocalDateTime endDateANDTime,
-                           SleepQuality quality) {
+    public SleepingSession(LocalDateTime startDateANDTime, LocalDateTime endDateANDTime, SleepQuality quality) {
         this.startDateANDTime = startDateANDTime;
         this.endDateANDTime = endDateANDTime;
         this.quality = quality;
@@ -31,5 +30,5 @@ public class SleepingSession {
     public long getDurationMinutes() {
         return Duration.between(startDateANDTime, endDateANDTime).toMinutes();
     }
-    
+
 }

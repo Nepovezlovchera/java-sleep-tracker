@@ -26,9 +26,15 @@ public class SleepAnalysisResult {
         if (chronotypeName != null) {
             String chronotypeString;
             switch (chronotypeName.getName()) {
-                case OWL: chronotypeString = "Сова"; break;
-                case LARK: chronotypeString = "Жаворонок"; break;
-                default: chronotypeString = "Голубь"; break;
+                case OWL:
+                    chronotypeString = "Сова";
+                    break;
+                case LARK:
+                    chronotypeString = "Жаворонок";
+                    break;
+                default:
+                    chronotypeString = "Голубь";
+                    break;
             }
             return description + ": " + chronotypeString;
         } else {

@@ -6,7 +6,7 @@ import ru.yandex.practicum.sleeptracker.SleepingSession;
 import java.util.List;
 import java.util.function.Function;
 
-public class AvgDurationFunction implements Function <List<SleepingSession>, SleepAnalysisResult> {
+public class AvgDurationFunction implements Function<List<SleepingSession>, SleepAnalysisResult> {
     @Override
     public SleepAnalysisResult apply(List<SleepingSession> sessions) {
         if (sessions.isEmpty()) {
