@@ -19,18 +19,13 @@ public class SleeplessNightsFunction implements Function<List<SleepingSession>, 
     @Override
     public SleepAnalysisResult apply(List<SleepingSession> sessions) {
         if (sessions.isEmpty()) {
-            return new SleepAnalysisResult("Кол-во бессонных ночей ",
-                    0);
+            return new SleepAnalysisResult("Кол-во бессонных ночей ", 0);
         }
 
-        Set<LocalDate> nightsWithSleep = sessions.stream()
-                .map(session -> {
-                    LocalDateTime start = session.getStartDateANDTime();
-                    return start.getHour() < HALF_DAY
-                            ? start.toLocalDate()
-                            : start.toLocalDate().plusDays(ONE_DAY);
-                })
-                .collect(Collectors.toSet());
+        Set<LocalDate> nightsWithSleep = sessions.stream().map(session -> {
+            LocalDateTime start = session.getStartDateANDTime();
+            return start.getHour() < HALF_DAY ? start.toLocalDate() : start.toLocalDate().plusDays(ONE_DAY);
+        }).collect(Collectors.toSet());
 
         LocalDateTime firstSessionStart = sessions.get(0).getStartDateANDTime();
         LocalDate firstNight;
@@ -56,8 +51,7 @@ public class SleeplessNightsFunction implements Function<List<SleepingSession>, 
         LocalDateTime nightStart = LocalDateTime.of(date, LocalTime.of(0, 0));
         LocalDateTime nightEnd = LocalDateTime.of(date, LocalTime.of(6, 0));
 
-        boolean sleepNightSession = sessions.getStartDateANDTime().isBefore(nightEnd) &&
-                sessions.getEndDateANDTime().isAfter(nightStart);
+        boolean sleepNightSession = sessions.getStartDateANDTime().isBefore(nightEnd) && sessions.getEndDateANDTime().isAfter(nightStart);
 
         return !sleepNightSession;
     }

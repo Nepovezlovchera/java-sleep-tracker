@@ -10,17 +10,12 @@ public class MaxDurationFunction implements Function<List<SleepingSession>, Slee
     @Override
     public SleepAnalysisResult apply(List<SleepingSession> sessions) {
         if (sessions.isEmpty()) {
-            return new SleepAnalysisResult("Максимальная продолжительность сна (минуты)",
-                    0);
+            return new SleepAnalysisResult("Максимальная продолжительность сна (минуты)", 0);
         }
 
-        long maxDuration = sessions.stream()
-                .mapToLong(SleepingSession::getDurationMinutes)
-                .max()
-                .orElse(0);
+        long maxDuration = sessions.stream().mapToLong(SleepingSession::getDurationMinutes).max().orElse(0);
 
-        return new SleepAnalysisResult("Максимальная продолжительность сна (минуты)",
-                maxDuration);
+        return new SleepAnalysisResult("Максимальная продолжительность сна (минуты)", maxDuration);
 
     }
 }

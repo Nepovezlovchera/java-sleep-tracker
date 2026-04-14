@@ -10,8 +10,7 @@ import java.util.function.Function;
 
 public class SleepTrackerApp {
 
-    private static List<Function<List<SleepingSession>, SleepAnalysisResult>> analysisFunctions =
-            new ArrayList<>();
+    private static List<Function<List<SleepingSession>, SleepAnalysisResult>> analysisFunctions = new ArrayList<>();
 
     static {
         analysisFunctions.add(new TotalSessionsFunction());

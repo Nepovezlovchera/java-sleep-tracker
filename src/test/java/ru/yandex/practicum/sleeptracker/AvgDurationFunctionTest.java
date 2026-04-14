@@ -36,9 +36,7 @@ public class AvgDurationFunctionTest {
         List<SleepingSession> sleepingSessions = List.of(session1, session2);
         SleepAnalysisResult test = avgDurationFunction.apply(sleepingSessions);
 
-        long sum = sleepingSessions.stream()
-                .mapToLong(SleepingSession::getDurationMinutes)
-                .sum();
+        long sum = sleepingSessions.stream().mapToLong(SleepingSession::getDurationMinutes).sum();
 
         long expectedAvg = sum / sleepingSessions.size();
 

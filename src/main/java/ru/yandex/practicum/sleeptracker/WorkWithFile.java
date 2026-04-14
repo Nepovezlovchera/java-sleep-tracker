@@ -20,20 +20,14 @@ public class WorkWithFile {
     public List<SleepingSession> loadSessions() throws IOException {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yy HH:mm");
 
-        try (BufferedReader reader = new BufferedReader(
-                new InputStreamReader(new FileInputStream(fileName), StandardCharsets.UTF_8))) {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(fileName), StandardCharsets.UTF_8))) {
 
-            return reader.lines()
-                    .filter(line -> line != null && !line.trim().isEmpty())
-                    .map(line -> line.split(";"))
-                    .filter(parts -> parts.length == 3)
-                    .map(parts -> {
-                        LocalDateTime start = LocalDateTime.parse(parts[0], formatter);
-                        LocalDateTime end = LocalDateTime.parse(parts[1], formatter);
-                        SleepQuality quality = SleepQuality.valueOf(parts[2].trim());
-                        return new SleepingSession(start, end, quality);
-                    })
-                    .collect(Collectors.toList());
+            return reader.lines().filter(line -> line != null && !line.trim().isEmpty()).map(line -> line.split(";")).filter(parts -> parts.length == 3).map(parts -> {
+                LocalDateTime start = LocalDateTime.parse(parts[0], formatter);
+                LocalDateTime end = LocalDateTime.parse(parts[1], formatter);
+                SleepQuality quality = SleepQuality.valueOf(parts[2].trim());
+                return new SleepingSession(start, end, quality);
+            }).collect(Collectors.toList());
         }
     }
 }

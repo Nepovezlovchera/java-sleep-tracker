@@ -2,8 +2,6 @@ package ru.yandex.practicum.sleeptracker;
 
 import org.junit.jupiter.api.Test;
 import ru.yandex.practicum.sleeptracker.analysis.TotalSessionsFunction;
-import ru.yandex.practicum.sleeptracker.SleepAnalysisResult;
-import ru.yandex.practicum.sleeptracker.SleepQuality;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;

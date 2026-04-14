@@ -4,9 +4,9 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 
 public class SleepingSession {
-    private LocalDateTime startDateANDTime;
-    private LocalDateTime endDateANDTime;
-    private SleepQuality quality;
+    private final LocalDateTime startDateANDTime;
+    private final LocalDateTime endDateANDTime;
+    private final SleepQuality quality;
 
 
     public LocalDateTime getStartDateANDTime() {

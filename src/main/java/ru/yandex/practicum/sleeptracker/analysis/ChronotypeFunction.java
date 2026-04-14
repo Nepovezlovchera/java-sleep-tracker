@@ -26,46 +26,29 @@ public class ChronotypeFunction implements Function<List<SleepingSession>, Sleep
     @Override
     public SleepAnalysisResult apply(List<SleepingSession> sessions) {
         if (sessions.isEmpty()) {
-            return new SleepAnalysisResult("Хронотип пользователя ",
-                    new ChronotypeName(Chronotype.PIGEON));
+            return new SleepAnalysisResult("Хронотип пользователя ", new ChronotypeName(Chronotype.PIGEON));
         }
-        Map<LocalDate, List<SleepingSession>> nightsWithSleep = sessions.stream()
-                .collect(Collectors.groupingBy(session -> {
-                    LocalDateTime start = session.getStartDateANDTime();
-                    return start.getHour() < HALF_DAY
-                            ? start.toLocalDate()
-                            : start.toLocalDate().plusDays(ONE_DAY);
-                }));
+        Map<LocalDate, List<SleepingSession>> nightsWithSleep = sessions.stream().collect(Collectors.groupingBy(session -> {
+            LocalDateTime start = session.getStartDateANDTime();
+            return start.getHour() < HALF_DAY ? start.toLocalDate() : start.toLocalDate().plusDays(ONE_DAY);
+        }));
 
         Map<Chronotype, Integer> countsChronotype = new HashMap<>();
         countsChronotype.put(Chronotype.OWL, 0);
         countsChronotype.put(Chronotype.LARK, 0);
         countsChronotype.put(Chronotype.PIGEON, 0);
 
-        Map<LocalDate, Chronotype> nightTypes = nightsWithSleep.entrySet().stream()
-                .collect(Collectors.toMap(
-                        entry -> entry.getKey(),
-                        entry -> chronotypeForNight(entry.getValue())
-                ));
+        Map<LocalDate, Chronotype> nightTypes = nightsWithSleep.entrySet().stream().collect(Collectors.toMap(entry -> entry.getKey(), entry -> chronotypeForNight(entry.getValue())));
 
-        Map<Chronotype, Long> countChronotype = nightTypes.values().stream()
-                .collect(Collectors.groupingBy(
-                        chronotype -> chronotype, Collectors.counting()));
+        Map<Chronotype, Long> countChronotype = nightTypes.values().stream().collect(Collectors.groupingBy(chronotype -> chronotype, Collectors.counting()));
 
-        return new SleepAnalysisResult("Твой хронатип", new ChronotypeName(
-                getDominantChronotype(countChronotype)));
+        return new SleepAnalysisResult("Твой хронатип", new ChronotypeName(getDominantChronotype(countChronotype)));
     }
 
     public Chronotype chronotypeForNight(List<SleepingSession> sessions) {
-        LocalTime starSleep = sessions.stream()
-                .map(session -> session.getStartDateANDTime().toLocalTime())
-                .min(LocalTime::compareTo)
-                .orElse(LocalTime.MIDNIGHT);
+        LocalTime starSleep = sessions.stream().map(session -> session.getStartDateANDTime().toLocalTime()).min(LocalTime::compareTo).orElse(LocalTime.MIDNIGHT);
 
-        LocalTime endSleep = sessions.stream()
-                .map(session -> session.getEndDateANDTime().toLocalTime())
-                .max(LocalTime::compareTo)
-                .orElse(LocalTime.MIDNIGHT);
+        LocalTime endSleep = sessions.stream().map(session -> session.getEndDateANDTime().toLocalTime()).max(LocalTime::compareTo).orElse(LocalTime.MIDNIGHT);
 
         if (starSleep.isAfter(OWL_SLEEP_START) && endSleep.isAfter(OWL_SLEEP_END)) {
             return Chronotype.OWL;
@@ -77,14 +60,9 @@ public class ChronotypeFunction implements Function<List<SleepingSession>, Sleep
     }
 
     private Chronotype getDominantChronotype(Map<Chronotype, Long> counts) {
-        long maxCount = counts.values().stream()
-                .max(Long::compareTo)
-                .orElse(0L);
+        long maxCount = counts.values().stream().max(Long::compareTo).orElse(0L);
 
-        List<Chronotype> dominant = counts.entrySet().stream()
-                .filter(entry -> entry.getValue() == maxCount)
-                .map(Map.Entry::getKey)
-                .collect(Collectors.toList());
+        List<Chronotype> dominant = counts.entrySet().stream().filter(entry -> entry.getValue() == maxCount).map(Map.Entry::getKey).collect(Collectors.toList());
         return dominant.size() == 1 ? dominant.get(0) : Chronotype.PIGEON;
     }
 }
