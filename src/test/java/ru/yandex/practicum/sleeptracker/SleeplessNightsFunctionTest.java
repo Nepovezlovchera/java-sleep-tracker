@@ -1,7 +1,6 @@
 package ru.yandex.practicum.sleeptracker;
 
 import org.junit.jupiter.api.Test;
-import ru.yandex.practicum.sleeptracker.analysis.MinDurationFunction;
 import ru.yandex.practicum.sleeptracker.analysis.SleeplessNightsFunction;
 
 import java.time.LocalDateTime;
