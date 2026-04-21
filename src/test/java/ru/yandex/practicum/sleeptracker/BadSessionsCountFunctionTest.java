@@ -10,8 +10,8 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class BadSessionsCountFunctionTest {
-    private static final char ZERO = 0;
-    private static final char ONE = 1;
+    private static final int ZERO = 0;
+    private static final int ONE = 1;
 
     @Test
     void should_ReturnZeroForEmptyList() {

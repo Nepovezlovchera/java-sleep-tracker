@@ -11,8 +11,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class SleeplessNightsFunctionTest {
 
-    private static final char ZERO = 0;
-    private static final char ONE_DAY = 1;
+    private static final int ZERO = 0;
+    private static final int ONE_DAY = 1;
 
     @Test
     void should_ReturnZeroForEmptyList() {

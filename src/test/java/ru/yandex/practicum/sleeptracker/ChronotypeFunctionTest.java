@@ -11,8 +11,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ChronotypeFunctionTest {
 
-    private static final char ZERO = 0;
-    private static final char ONE = 1;
+    private static final int ZERO = 0;
+    private static final int ONE = 1;
 
 
     @Test
@@ -20,23 +20,23 @@ public class ChronotypeFunctionTest {
         ChronotypeFunction chronotypeFunction = new ChronotypeFunction();
         List<SleepingSession> sleepingSessions = new ArrayList<>();
         SleepAnalysisResult test = chronotypeFunction.apply(sleepingSessions);
-        ChronotypeName chronotypeName = test.getChronotypeName();
+        Chronotype chronotypeName = (Chronotype) test.getValue();
 
-        assertEquals(Chronotype.PIGEON, chronotypeName.getName());
+        assertEquals(Chronotype.PIGEON, chronotypeName);
     }
 
     @Test
-    void should_DetectOwl() {
+        void should_DetectOwl() {
         LocalDateTime start = LocalDateTime.of(2025, 10, 1, 23, 30);
         LocalDateTime end = LocalDateTime.of(2025, 10, 2, 10, 0);
         SleepingSession session = new SleepingSession(start, end, SleepQuality.GOOD);
 
         ChronotypeFunction chronotypeFunction = new ChronotypeFunction();
         List<SleepingSession> sessions = List.of(session);
-        SleepAnalysisResult result = chronotypeFunction.apply(sessions);
+        SleepAnalysisResult test = chronotypeFunction.apply(sessions);
 
-        ChronotypeName chronotypeName = result.getChronotypeName();
-        assertEquals(Chronotype.OWL, chronotypeName.getName());
+        Chronotype chronotypeName = (Chronotype) test.getValue();
+        assertEquals(Chronotype.OWL, chronotypeName);
     }
 
     @Test
@@ -47,10 +47,10 @@ public class ChronotypeFunctionTest {
 
         ChronotypeFunction chronotypeFunction = new ChronotypeFunction();
         List<SleepingSession> sessions = List.of(session);
-        SleepAnalysisResult result = chronotypeFunction.apply(sessions);
+        SleepAnalysisResult test = chronotypeFunction.apply(sessions);
 
-        ChronotypeName chronotypeName = result.getChronotypeName();
-        assertEquals(Chronotype.LARK, chronotypeName.getName());
+        Chronotype chronotypeName = (Chronotype) test.getValue();
+        assertEquals(Chronotype.LARK, chronotypeName);
     }
 
     @Test
@@ -61,9 +61,30 @@ public class ChronotypeFunctionTest {
 
         ChronotypeFunction chronotypeFunction = new ChronotypeFunction();
         List<SleepingSession> sessions = List.of(session);
-        SleepAnalysisResult result = chronotypeFunction.apply(sessions);
+        SleepAnalysisResult test = chronotypeFunction.apply(sessions);
 
-        ChronotypeName chronotypeName = result.getChronotypeName();
-        assertEquals(Chronotype.PIGEON, chronotypeName.getName());
+        Chronotype chronotypeName = (Chronotype) test.getValue();
+        assertEquals(Chronotype.PIGEON, chronotypeName);
+    }
+
+    @Test
+    void shouldReturnPigeonWhenOneOwlAndOneLark() {
+        SleepingSession owlSession = new SleepingSession(
+                LocalDateTime.of(2025, 10, 1, 23, 30),
+                LocalDateTime.of(2025, 10, 2, 10, 0),
+                SleepQuality.GOOD
+        );
+
+        SleepingSession larkSession = new SleepingSession(
+                LocalDateTime.of(2025, 10, 3, 21, 0),
+                LocalDateTime.of(2025, 10, 4, 6, 30),
+                SleepQuality.GOOD
+        );
+
+        ChronotypeFunction function = new ChronotypeFunction();
+        SleepAnalysisResult result = function.apply(List.of(owlSession, larkSession));
+        Chronotype actual = (Chronotype) result.getValue();
+
+        assertEquals(Chronotype.PIGEON, actual);
     }
 }

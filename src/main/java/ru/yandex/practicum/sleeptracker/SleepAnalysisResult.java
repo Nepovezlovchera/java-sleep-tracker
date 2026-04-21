@@ -1,49 +1,26 @@
 package ru.yandex.practicum.sleeptracker;
 
+
 public class SleepAnalysisResult {
     private final String description;
-    private final long value;
-    private final ChronotypeName chronotypeName;
+    private final Object value;
 
-    public SleepAnalysisResult(String description, ChronotypeName chronotypeName) {
-        this.description = description;
-        this.value = -1;
-        this.chronotypeName = chronotypeName;
-    }
 
-    public long getValue() {
-        return value;
-    }
-
-    public SleepAnalysisResult(String description, long value) {
+    public SleepAnalysisResult(String description, Object value) {
         this.description = description;
         this.value = value;
-        this.chronotypeName = null;
+    }
+
+    public Object getValue() {
+        return value;
     }
 
     @Override
     public String toString() {
-        if (chronotypeName != null) {
-            String chronotypeString;
-            switch (chronotypeName.getName()) {
-                case OWL:
-                    chronotypeString = "Сова";
-                    break;
-                case LARK:
-                    chronotypeString = "Жаворонок";
-                    break;
-                default:
-                    chronotypeString = "Голубь";
-                    break;
-            }
-            return description + ": " + chronotypeString;
-        } else {
-            // Это результат с числом
-            return description + ": " + value;
+        if (value instanceof Chronotype) {
+            Chronotype chronotype = (Chronotype) value;
+            return description + ": " + chronotype.getDisplayName();
         }
-    }
-
-    public ChronotypeName getChronotypeName() {
-        return chronotypeName;
+        return description + ": " + value;
     }
 }

@@ -10,7 +10,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class AvgDurationFunctionTest {
-    private static final char ZERO = 0;
+    private static final int ZERO = 0;
 
     @Test
     void should_ReturnZeroForEmptyList() {

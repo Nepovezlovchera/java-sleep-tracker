@@ -12,8 +12,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class SleepTrackerAppTest {
 
-    private static final long ZERO = 0;
-    private static final long ONE = 1;
+    private static final int ZERO = 0;
+    private static final int     ONE = 1;
 
     @Test
     void should_ReturnZeroForEmptyList() {

@@ -7,15 +7,17 @@ import java.util.List;
 import java.util.function.Function;
 
 public class MaxDurationFunction implements Function<List<SleepingSession>, SleepAnalysisResult> {
+    private static final String MAX_DURATION_DESC = "Максимальная продолжительность сна (минуты)";
+
     @Override
     public SleepAnalysisResult apply(List<SleepingSession> sessions) {
         if (sessions.isEmpty()) {
-            return new SleepAnalysisResult("Максимальная продолжительность сна (минуты)", 0);
+            return new SleepAnalysisResult(MAX_DURATION_DESC, 0);
         }
 
         long maxDuration = sessions.stream().mapToLong(SleepingSession::getDurationMinutes).max().orElse(0);
 
-        return new SleepAnalysisResult("Максимальная продолжительность сна (минуты)", maxDuration);
+        return new SleepAnalysisResult(MAX_DURATION_DESC, maxDuration);
 
     }
 }

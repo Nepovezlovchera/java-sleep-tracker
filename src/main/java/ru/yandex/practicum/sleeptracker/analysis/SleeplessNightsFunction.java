@@ -6,53 +6,51 @@ import ru.yandex.practicum.sleeptracker.SleepingSession;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.Period;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class SleeplessNightsFunction implements Function<List<SleepingSession>, SleepAnalysisResult> {
-    private static final int HALF_DAY = 12;
-    private static final char ONE_DAY = 1;
+    private static final LocalTime NOON = LocalTime.of(12, 0, 0);
+    private static final int ONE_DAY = 1;
+    private static final String COUNT_BAD_NIGHT_SESSIONS = "Количество бессонных ночей";
 
     @Override
     public SleepAnalysisResult apply(List<SleepingSession> sessions) {
         if (sessions.isEmpty()) {
-            return new SleepAnalysisResult("Кол-во бессонных ночей ", 0);
+            return new SleepAnalysisResult(COUNT_BAD_NIGHT_SESSIONS, 0);
         }
 
-        Set<LocalDate> nightsWithSleep = sessions.stream().map(session -> {
-            LocalDateTime start = session.getStartDateANDTime();
-            return start.getHour() < HALF_DAY ? start.toLocalDate() : start.toLocalDate().plusDays(ONE_DAY);
-        }).collect(Collectors.toSet());
+        Set<LocalDate> nightsWithSleep = sessions.stream()
+                .map(this::getNightDate)
+                .collect(Collectors.toSet());
 
-        LocalDateTime firstSessionStart = sessions.get(0).getStartDateANDTime();
-        LocalDate firstNight;
-        if (firstSessionStart.getHour() < HALF_DAY) {
-            firstNight = firstSessionStart.toLocalDate();
-        } else {
-            firstNight = firstSessionStart.toLocalDate().plusDays(ONE_DAY);
-        }
+        LocalDate firstNight = getFirstNight(sessions);
+        LocalDate lastNight = getLastNight(sessions);
 
-        LocalDateTime lastSessionEnd = sessions.get(sessions.size() - ONE_DAY).getEndDateANDTime();
-        LocalDate lastNight = lastSessionEnd.toLocalDate();
+        long totalNights = firstNight.datesUntil(lastNight.plusDays(ONE_DAY)).count();
 
-        Period period = Period.between(firstNight, lastNight);
-        long totalNights = period.getDays() + 1;
-        long countNotNightSession = totalNights - nightsWithSleep.size();
+        long sleeplessNights = totalNights - nightsWithSleep.size();
 
-
-        return new SleepAnalysisResult("Количество бессонных ночей", countNotNightSession);
-
+        return new SleepAnalysisResult(COUNT_BAD_NIGHT_SESSIONS, sleeplessNights);
     }
 
-    private boolean isSleeplessNight(SleepingSession sessions, LocalDate date) {
-        LocalDateTime nightStart = LocalDateTime.of(date, LocalTime.of(0, 0));
-        LocalDateTime nightEnd = LocalDateTime.of(date, LocalTime.of(6, 0));
+    private LocalDate getNightDate(SleepingSession session) {
+        LocalDateTime start = session.getStartDateANDTime();
+        return start.toLocalTime().isBefore(NOON)
+                ? start.toLocalDate()
+                : start.toLocalDate().plusDays(ONE_DAY);
+    }
 
-        boolean sleepNightSession = sessions.getStartDateANDTime().isBefore(nightEnd) && sessions.getEndDateANDTime().isAfter(nightStart);
+    private LocalDate getFirstNight(List<SleepingSession> sessions) {
+        LocalDateTime firstStart = sessions.get(0).getStartDateANDTime();
+        return firstStart.toLocalTime().isBefore(NOON)
+                ? firstStart.toLocalDate()
+                : firstStart.toLocalDate().plusDays(ONE_DAY);
+    }
 
-        return !sleepNightSession;
+    private LocalDate getLastNight(List<SleepingSession> sessions) {
+        return sessions.get(sessions.size() - ONE_DAY).getEndDateANDTime().toLocalDate();
     }
 }
