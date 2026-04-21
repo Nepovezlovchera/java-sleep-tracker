@@ -19,7 +19,7 @@ public class SleeplessNightsFunction implements Function<List<SleepingSession>, 
     @Override
     public SleepAnalysisResult apply(List<SleepingSession> sessions) {
         if (sessions.isEmpty()) {
-            return new SleepAnalysisResult(COUNT_BAD_NIGHT_SESSIONS, 0);
+            return new SleepAnalysisResult(COUNT_BAD_NIGHT_SESSIONS, 0L);
         }
 
         Set<LocalDate> nightsWithSleep = sessions.stream()
