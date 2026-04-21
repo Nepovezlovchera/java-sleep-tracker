@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class MaxDurationFunctionTest {
 
-    private static final int ZERO = 0;
+    private static final long ZERO = 0L;
 
     @Test
     void should_ReturnZeroForEmptyList() {

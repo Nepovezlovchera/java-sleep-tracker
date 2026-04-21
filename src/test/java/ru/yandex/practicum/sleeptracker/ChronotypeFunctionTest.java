@@ -11,8 +11,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ChronotypeFunctionTest {
 
-    private static final int ZERO = 0;
-    private static final int ONE = 1;
+    private static final long ZERO = 0L;
+    private static final long ONE = 1L;
 
 
     @Test
