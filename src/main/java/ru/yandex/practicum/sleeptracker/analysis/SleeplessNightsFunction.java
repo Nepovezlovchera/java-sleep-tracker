@@ -30,8 +30,16 @@ public class SleeplessNightsFunction implements Function<List<SleepingSession>, 
                 .map(this::getNightDate)
                 .collect(Collectors.toSet());
 
-        LocalDate firstNight = getFirstNight(sessions);
-        LocalDate lastNight = getLastNight(sessions);
+        List<SleepingSession> nightSessions = sessions.stream()
+                .filter(this::isNightSession)
+                .collect(Collectors.toList());
+
+        if (nightSessions.isEmpty()) {
+            return new SleepAnalysisResult(SLEEPLESS_NIGHTS_DESC, 0L);
+        }
+
+        LocalDate firstNight = getFirstNight(nightSessions);
+        LocalDate lastNight = getLastNight(nightSessions);
 
         long totalNights = firstNight.datesUntil(lastNight.plusDays(ONE_DAY)).count();
 
@@ -44,10 +52,16 @@ public class SleeplessNightsFunction implements Function<List<SleepingSession>, 
         LocalDateTime start = session.getStartDateANDTime();
         LocalDateTime end = session.getEndDateANDTime();
 
-        LocalDateTime nightStart = LocalDateTime.of(start.toLocalDate(), NIGHT_START);
-        LocalDateTime nightEnd = LocalDateTime.of(start.toLocalDate(), NIGHT_END);
+        LocalDateTime nightStartStart = LocalDateTime.of(start.toLocalDate(), NIGHT_START);
+        LocalDateTime nightEndStart = LocalDateTime.of(start.toLocalDate(), NIGHT_END);
 
-        return start.isBefore(nightEnd) && end.isAfter(nightStart);
+        LocalDateTime nightStartEnd = LocalDateTime.of(end.toLocalDate(), NIGHT_START);
+        LocalDateTime nightEndEnd = LocalDateTime.of(end.toLocalDate(), NIGHT_END);
+
+        boolean crossesNightOnStart = start.isBefore(nightEndStart) && end.isAfter(nightStartStart);
+        boolean crossesNightOnEnd = start.isBefore(nightEndEnd) && end.isAfter(nightStartEnd);
+
+        return crossesNightOnStart || crossesNightOnEnd;
     }
 
     private LocalDate getNightDate(SleepingSession session) {
