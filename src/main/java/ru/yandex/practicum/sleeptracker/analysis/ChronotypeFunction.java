@@ -14,9 +14,8 @@ import java.util.stream.Collectors;
 
 public class ChronotypeFunction implements Function<List<SleepingSession>, SleepAnalysisResult> {
 
-    private static final LocalTime OWL_LATE_START = LocalTime.of(23, 0);
-    private static final LocalTime OWL_EVENING_START = LocalTime.of(22, 0);
-    private static final LocalTime OWL_LATE_WAKE = LocalTime.of(9, 0);
+    private static final LocalTime OWL_START = LocalTime.of(23, 0);
+    private static final LocalTime OWL_WAKE = LocalTime.of(9, 0);
     private static final LocalTime LARK_BED_END = LocalTime.of(22, 0);
     private static final LocalTime LARK_WAKE_END = LocalTime.of(7, 0);
 
@@ -48,17 +47,13 @@ public class ChronotypeFunction implements Function<List<SleepingSession>, Sleep
         }
 
         Map<Chronotype, Long> countChronotype = nightsWithSleep.values().stream()
-                .map(this::chronotypeForNight)
+                .map(this::chronotypeForNight)  // ← передаем уже отфильтрованные сессии
                 .collect(Collectors.groupingBy(chronotype -> chronotype, Collectors.counting()));
 
         return new SleepAnalysisResult(CHRONOTYPE_USER, getDominantChronotype(countChronotype));
     }
 
-    public Chronotype chronotypeForNight(List<SleepingSession> sessions) {
-        List<SleepingSession> nightSessions = sessions.stream()
-                .filter(this::isNightSession)
-                .collect(Collectors.toList());
-
+    private Chronotype chronotypeForNight(List<SleepingSession> nightSessions) {
         if (nightSessions.isEmpty()) {
             return Chronotype.PIGEON;
         }
@@ -83,10 +78,10 @@ public class ChronotypeFunction implements Function<List<SleepingSession>, Sleep
     }
 
     private boolean isOwl(LocalTime start, LocalTime end) {
-        if (start.isAfter(OWL_LATE_START)) {
+        if (start.isAfter(OWL_START) && end.isAfter(OWL_WAKE)) {
             return true;
         }
-        if (start.isAfter(OWL_EVENING_START) && end.isAfter(OWL_LATE_WAKE)) {
+        if (start.isAfter(LocalTime.MIDNIGHT) && end.isAfter(OWL_WAKE)) {
             return true;
         }
         return false;
@@ -103,15 +98,12 @@ public class ChronotypeFunction implements Function<List<SleepingSession>, Sleep
         if (startTime.isAfter(EVENING_START) && endTime.isBefore(MORNING_END)) {
             return true;
         }
-
         if (startTime.isBefore(NIGHT_END) && endTime.isBefore(NIGHT_END)) {
             return true;
         }
-
         if (startTime.isBefore(NIGHT_END) && endTime.isBefore(MORNING_END)) {
             return true;
         }
-
         return false;
     }
 

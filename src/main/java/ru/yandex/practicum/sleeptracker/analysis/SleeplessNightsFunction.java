@@ -14,15 +14,19 @@ import java.util.stream.Collectors;
 public class SleeplessNightsFunction implements Function<List<SleepingSession>, SleepAnalysisResult> {
     private static final LocalTime NOON = LocalTime.of(12, 0, 0);
     private static final int ONE_DAY = 1;
-    private static final String COUNT_BAD_NIGHT_SESSIONS = "Количество бессонных ночей";
+    private static final String SLEEPLESS_NIGHTS_DESC = "Количество бессонных ночей";
+
+    private static final LocalTime NIGHT_START = LocalTime.of(0, 0);
+    private static final LocalTime NIGHT_END = LocalTime.of(6, 0);
 
     @Override
     public SleepAnalysisResult apply(List<SleepingSession> sessions) {
         if (sessions.isEmpty()) {
-            return new SleepAnalysisResult(COUNT_BAD_NIGHT_SESSIONS, 0L);
+            return new SleepAnalysisResult(SLEEPLESS_NIGHTS_DESC, 0L);
         }
 
         Set<LocalDate> nightsWithSleep = sessions.stream()
+                .filter(this::isNightSession)
                 .map(this::getNightDate)
                 .collect(Collectors.toSet());
 
@@ -33,7 +37,17 @@ public class SleeplessNightsFunction implements Function<List<SleepingSession>, 
 
         long sleeplessNights = totalNights - nightsWithSleep.size();
 
-        return new SleepAnalysisResult(COUNT_BAD_NIGHT_SESSIONS, sleeplessNights);
+        return new SleepAnalysisResult(SLEEPLESS_NIGHTS_DESC, sleeplessNights);
+    }
+
+    private boolean isNightSession(SleepingSession session) {
+        LocalDateTime start = session.getStartDateANDTime();
+        LocalDateTime end = session.getEndDateANDTime();
+
+        LocalDateTime nightStart = LocalDateTime.of(start.toLocalDate(), NIGHT_START);
+        LocalDateTime nightEnd = LocalDateTime.of(start.toLocalDate(), NIGHT_END);
+
+        return start.isBefore(nightEnd) && end.isAfter(nightStart);
     }
 
     private LocalDate getNightDate(SleepingSession session) {
